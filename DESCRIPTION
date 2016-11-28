@@ -1,0 +1,10 @@
+Package: azavezHW6
+Type: Package
+Title: azavezHW6
+Version: 0.1.0
+Author: Alexis Zavez
+Maintainer: <Alexis_Zavez@urmc.rochester.edu>
+Description: Creates dataframes and plots for use with URMC fitness center data.
+Imports: graphics
+License: GPL-3
+LazyData: TRUE
