@@ -7,7 +7,7 @@ Sample URMC Fitness Center Data Set
 \description{
 This is a sample URMC fitness center data set
 }
-\usage{data("sample.data")}
+\usage{data(sample.data)}
 \format{
   A data frame with 34 observations on the following 10 variables.
   \describe{
