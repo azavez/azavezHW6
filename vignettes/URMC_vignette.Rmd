@@ -1,7 +1,7 @@
 ---
-title: 'Statistical Computing R HW #6'
+title: 'Statistical Computing R HW #8'
 author: "Alexis Zavez"
-date: "November 21, 2016"
+date: "December 17, 2016"
 output: html_document
 ---
 
@@ -37,13 +37,17 @@ Data were collected during each visit to the URMC fitness center. There are five
 
 When importing the data from googlesheets, you may want to use a transposed version of your data set. I found that, when transposing the data, the column headers were not maintained. If this happens, the column header function (col_head) can be used to make the first row of data the column headers, as desired. 
 
+After transposing the data, column headers have been removed and are now the first row of data:
+
 
 ```{r col head function, include = TRUE, echo = TRUE}
-#After transposing the data, column headers have been removed and are now the first row of data
 head(fitness_t, n = 3)
-#Use function from azavezHW6 package to redefine first row of data as the column headers
+```
+
+The col_head function from azavezHW6 package can be used to redefine first row of data as the column headers. Printing the modified data set confirms that the column headers have been replaced as desired: 
+
+```{r col head function2, include = TRUE, echo = TRUE}
 fitness_t <- col_head(fitness_t)
-#Column headers replaced as desired 
 head(fitness_t, n = 3)
 ```
 
@@ -63,17 +67,17 @@ mtext("Rainy v. Clear Days")
 
 #### Using Frequency Plot (freq.plot) Function:
 
-The freq.plot function makes it very easy to create visuals of the fitness center data. The freq.plot functions takes a vector of data, and plots the frequencies for each category in that vector: 
+The freq.plot function makes it very easy to create visuals of the fitness center data. The freq.plot functions takes a vector of data, and plots the frequencies for each category in that vector. It also takes additional arguments from the graphics barplot function. 
 
 ```{r freq plot ex, echo=TRUE, include = TRUE, eval = FALSE}
-freq.plot(x, "x-axis title", "y-axis title", "main plot title") 
+freq.plot(x, xtitle = "x-axis title", ytitle = "y-axis title", mtitle = "main plot title",...) 
 ```
 
 For example, it is very easy to create a frequency plot of rainy v. clear days using the freq.plot function (as shown below). The freq.plot function will be used later to analyze the distribution of visits by time of day, and the distribution of visists by day of week. 
 
 ```{r Rain Freq Plot, fig.width=5, fig.height=4, echo=TRUE, fig.align = 'center'}
 rain <- fitness_t$Rain_Ind
-freq.plot(rain, "Rain Indicator", "Number of Visits", "Distribution of Visits")
+freq.plot(rain, xtitle = "Rain Indicator", ytitle = "Number of Visits", mtitle = "Distribution of Visits")
 mtext("Rainy v. Clear Days")
 ```
 
@@ -87,29 +91,33 @@ boxplot(fitness_t$Total ~ fitness_t$Day, xlab = "Day of Week", ylab = "Number of
 
 #### Analysis Using Compare Plot (compare.plot) Function:
 
-Additionally, it seems that more members visit the fitness center on Wednesdays and Mondays. We can further explore the distribution of members in different areas of the fitness center on Mondays and Wednesdays to determine why this might be the case. One can easily create plots by using the compare plot function (compare.plot) in the azavezHW6 package. This function separates a data set into two groups, and compares the means for those groups. By using compare.plot in the following way, one can easily compare the average occupancy at the URMC fitness center on one particular day of the week ("Day of Week") to the average occupancy on all other days of the week:
-
-
+Additionally, it seems that more members visit the fitness center on Wednesdays and Mondays. We can further explore the distribution of members in different areas of the fitness center on Mondays and Wednesdays to determine why this might be the case. One can easily create plots by using the compare plot function (compare.plot) in the azavezHW6 package. This function takes two groups of data and compares the mean fitness center occupancy for those groups across different areas of the fitness center. By using compare.plot in the following way, one can easily compare the average occupancy at the URMC fitness center on one set of days (group1) to the average occupancy on another set of days (group2):
 
 ```{r compare plot ex, echo=TRUE, include = TRUE, eval = FALSE}
-compare.plot(fitness_t, fitness_t$Day, "Day of Week") 
+compare.plot(fitness_t, fitness_t$Day, group1 = c("Day1, Day2",...), group2 = c("Day3", "Day4",...), group1.label = "Group 1", group2.label = "Group2",...)  
 ```
 
-
-The next plot compares the distribution of occupancy at the fitness center on Wednesdays  to the average occupancy on other days. There appears to be a significant increase in Wednesday occupancy in each area of the fitness center.  
-
+The next plot compares the distribution of occupancy at the fitness center on Wednesdays  to the average occupancy on other weekdays. There appears to be a slight increase in Wednesday occupancy in each area of the fitness center. The difference is most significant in the gymnasium area.  
 
 ```{r wed comparison plot, fig.width=6, fig.height=4.5, fig.align = 'center', echo = TRUE}
-compare.plot(fitness_t, fitness_t$Day, "Wednesday") 
+compare.plot(fitness_t, fitness_t$Day, group1 = "Wednesday", group2 = c("Monday", "Tuesday", "Thursday", "Friday"), group1.label = "Wednesday", group2.label = "Other Weekdays")
 ```
 
 
-The following plot compares the distribution of occupancy at the fitness center on Mondays to the average occupancy on other days. We see a similar trend regarding Monday occupancy. The most extreme difference appears in the Gymnasium area. Doing some additional research, I was able to conclude that on Monday and Wednesday evenings there is a popular group weight-lifting class in the gymnasium. This could explain the significant increase in the gymnasium area.
+The following plot compares the distribution of occupancy at the fitness center on Mondays to the average occupancy on other weekdays. We see a similar trend regarding Monday occupancy, but the differences are even more significant. The most extreme difference appears in the Gymnasium area. Doing some additional research, I was able to conclude that on Monday and Wednesday evenings there is a popular group weight-lifting class in the gymnasium. This could explain the significant increase in the gymnasium area.
 
 
 ```{r mon comparison plot, fig.width=6, fig.height=4.5, fig.align = 'center', echo = TRUE}
-compare.plot(fitness_t, fitness_t$Day, "Monday") 
+compare.plot(fitness_t, fitness_t$Day, group1 = "Monday", group2 = c("Tuesday", "Wednesday", "Thursday", "Friday"), group1.label = "Monday", group2.label = "Other Weekdays")
 ```
+
+Using the compare.plot function, we can also compare average occupancy on weekdays to weekends: 
+
+```{r weekend comparison plot, fig.width=6, fig.height=4.5, fig.align = 'center', echo = TRUE}
+compare.plot(fitness_t, fitness_t$Day, group1 = c("Satuday", "Sunday"), group2 = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), group1.label = "Weekends", group2.label = "Weekdays")
+```
+
+The fitness center is significantly more crowded on weekdays than weekends. This is what we would expect given that most members of the fitness center work Mondays to Friday.
 
 ## Limitations to Findings
 
@@ -130,8 +138,12 @@ days <- fitness_t$Day
 freq.plot(days, "", "Number of Visits", "Distribution of Visits by Day of Week")
 ```
 
-There are more visits on Sundays, Tuesdays, Thursdays, and Saturdays, with considerably fewer visits on the other days. For example, there are only two Monday visits and only one Wednesday visit. 
+There are more visits on Sundays, Tuesdays, Thursdays, and Saturdays, with fewer visits on the other days.
 
-##Future Analysis
+##Conclusion and Future Analysis
 
-In the future, it would be best to have multiple data collectors who visit the fitness center throughout the day. If additional members participated and recorded data, this analysis could be much more meaningful. In addition to collecting data on the weather (rainy v. clear), it would have also been helpful to collect data on temperature. This would have provided an additional level of analysis.
+While it is hard to make direct conclusions from a small, biased sample size, we can make some general conclusions about the occupancy of the URMC fitness center. Occupancy appears to spike at times when group fitness classes are being held. However, this increase in occupancy is unlikely to impact one's experience at the fitness center. For instance, if one is coming to the gym to attend that fitness class, they will not be impacted by the fact that more individuals are at the fitness center. This is because there is generally no upper limit on the number of participants in a given class.  Alternatively, if one is coming to the fitness center to participate in an activity that is not the fitness class, their experience will not be impacted by the individuals in the fitness class (since the gymnasium is separate from the rest of the center). 
+
+For this reason, it may beneficial to consider other metrics besides general fitness center occupancy. For example, one could record data on "The number of available treadmills" or "The wait-time for an open squash court". These types of metrics would be much more telling.  
+
+Additionally, it would also be helpful to have multiple data collectors who visit the fitness center throughout the day. If additional members participated and recorded data, this analysis could be much more meaningful. In addition to collecting data on the weather (rainy v. clear), it would have also been helpful to collect data on temperature. This would have provided an additional level of analysis.

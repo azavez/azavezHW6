@@ -8,20 +8,23 @@ Frequency Barplot Function
 This function creates a frequency barplot from a vector.
 }
 \usage{
-freq.plot(x, xtitle, ytitle, mtitle)
+freq.plot(x, xtitle, ytitle, mtitle,...)
 }
 \arguments{
   \item{x}{
 The vector for which you want to create a frequency barplot
 }
   \item{xtitle}{
-Title for the x-axis of the frequency barplot
+Title for the x-axis of the frequency barplot. The default title is "x-axis".
 }
   \item{ytitle}{
-Title for the y-axis of the frequency barplot
+Title for the y-axis of the frequency barplot. The default title is "y-axis"
 }
   \item{mtitle}{
-Main title for the frequency barplot
+Main title for the frequency barplot. The default title is "main title"
+}
+  \item{...}{
+Additional arguments passed to the barplot function
 }
 }
 \details{

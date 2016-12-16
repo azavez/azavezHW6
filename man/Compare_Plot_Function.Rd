@@ -8,7 +8,7 @@ Comparison Barplot Function
 This function is specifically designed for the URMC fitness dataset. It compares the averages for one group to the averages in a second group.
 }
 \usage{
-compare.plot(x, compare_column, group1)
+compare.plot(x, compare_column, group1, group2, group1.label = "Group 1", group2.label = "Group 2", ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -18,7 +18,19 @@ The data frame containting the data}
 The column of the data frame that contains the data that will be compared.
 }
  \item{group1}{
-The first comparison group. The remaining data will be the second comparison group.
+The first comparison group. It should be in the form of a list of character strings.
+}
+ \item{group2}{
+The second comparison group. It should be in the form of a list of character strings.
+}
+ \item{group1.label}{
+Legend text for first comparison group. The default is "Group 1".
+}
+ \item{group2.label}{
+Legend text for second comparison group. The default is "Group 2".
+}
+ \item{...}{
+This function takes additional arguments for barplot function.
 }
 }
 \details{
@@ -48,7 +60,7 @@ Alexis Zavez
 }
 \examples{
 data(sample.data)
-compare.plot(sample.data, sample.data$Day, "Wednesday")
+compare.plot(sample.data, sample.data$Day, group1 = "Wednesday", group2 = "Monday")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
